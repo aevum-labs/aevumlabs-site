@@ -11,6 +11,16 @@ interface Props {
 const { name, tagline, description, href, status, tags = [] } = Astro.props;
 
 const statusLabel = { active: 'Active', beta: 'Beta', wip: 'In Progress' }[status];
+
+const tagColors: Record<string, string> = {
+  'Python': '#5A8FA8',
+  'Ed25519': '#6B7280',
+  'Cedar ABAC': '#6B7280',
+  'OpenTelemetry': '#A8844A',
+  'Ontology': '#6B7280',
+  'LGPL-2.1': '#7A6FA8',
+};
+const fallbackColor = '#6B7280';
 ---
 
 <article class="project-card">
@@ -29,8 +39,24 @@ const statusLabel = { active: 'Active', beta: 'Beta', wip: 'In Progress' }[statu
     <p class="card-description">{description}</p>
     {tags.length > 0 && (
       <ul class="card-tags" aria-label="Technology tags">
-        {tags.map(tag => <li>{tag}</li>)}
+        {tags.map(tag => (
+          <li>
+            <span class="tag-dot" style={`background-color: ${tagColors[tag] ?? fallbackColor}`} aria-hidden="true"></span>{tag}
+          </li>
+        ))}
       </ul>
     )}
   </a>
 </article>
+
+<style>
+  .tag-dot {
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    margin-right: 6px;
+    vertical-align: middle;
+    flex-shrink: 0;
+  }
+</style>
